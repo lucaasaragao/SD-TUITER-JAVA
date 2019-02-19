@@ -1,4 +1,6 @@
-package dojo;
+ package dojo;
+
+
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -12,11 +14,13 @@ public class UsuarioImpl implements Usuario {
 	private String nome;
 	private List<Postagem> posts;
 	private List<Usuario> seguidos;
+	private List<Directs> directs;
 
 	public UsuarioImpl(String nome) {
 		this.nome = nome;
 		this.posts = new LinkedList<Postagem>();
 		this.seguidos = new LinkedList<Usuario>();
+		this.directs = new LinkedList<Directs>();
 	}
 	
 	@Override
@@ -66,5 +70,20 @@ public class UsuarioImpl implements Usuario {
 			posts.addAll(seguido.filtraPosts(inicio, fim));
 		}
 		return posts;
+	}
+
+	@Override
+	public void enviarDM(String mensagem, Usuario userReceiver , Usuario userSend) throws RemoteException {
+		// TODO Auto-generated method stub
+		Directs dir = new Directs(mensagem,userReceiver,userSend);
+		this.directs.add(dir);
+		
+		
+	}
+	
+	@Override
+	public List<Directs> getDirects() throws RemoteException {
+		// TODO Auto-generated method stub
+		return this.directs;
 	}
 }
