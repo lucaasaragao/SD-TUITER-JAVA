@@ -16,7 +16,7 @@ public class ClienteTuiter {
 	private static Servidor servidor;
 	private Usuario meuUsuario;
 	
-
+//
 	
 	private static String INIT_CHAR = "$ ";
 
@@ -91,6 +91,36 @@ public class ClienteTuiter {
 		return strBuilder.toString();
 	}
 	
+	
+	/**
+	 * Envia uma mensagem "direct" para outro user ;
+	 * 
+	 * @param args
+	 * @throws RemoteException
+	 */
+	public void enviarDM(String args[]) throws RemoteException {
+		String mensagem = args[0];
+		String outroUserName = args[1];
+		Usuario userReceiver = servidor.getUsuarios().get(outroUserName);	
+		meuUsuario.enviarDM(mensagem, userReceiver, meuUsuario);
+		
+	}
+	
+	public void verDM() throws RemoteException{
+		String saida="";
+		for(Directs dir: meuUsuario.getDirects()){
+			saida += "Mensagem: ";
+			saida += dir.getDirect() +  " ";
+			saida += " De: ";
+			saida += dir.getUserSend().getNome() + " ";
+			saida += " Para: ";
+			saida += dir.getUserReceiver().getNome();
+		}
+		System.err.println(saida);
+	}
+	
+	
+	
 	public static void main(String[] args) {
 		try {
 			String host = args.length < 1 ? "localhost" : args[0];
@@ -130,14 +160,25 @@ public class ClienteTuiter {
 					} else if (command.equals("/perfil")) {
 						Perfil (linha.nextToken());
 						
-					} else if (command.equals("/enviarDM")) {
+					} else if (command.equals("/enviardm")) {
 						// #2 Implementar funcionalidade para enviar mensagem direta para um usuário
-						System.out.println("Nao implementado!");
-					} else if (command.equals("/verDM")) {
-						// #3 Implementar funcionalidade para ver mensagens diretas do meu usuário
-						System.out.println("Nao implementado!");
-					} else {
-						System.err.println("Comando desconhecido: " + command + "\n" + COMANDOS);
+						/**
+						 * enviar Mensagem direta de um user para outro user;
+						 */
+					System.err.println("Digite a mensagem e o nome do usuario: ");
+					
+					Scanner param = new Scanner(System.in);
+					String mensagem = param.nextLine();
+					String userReceiver = param.nextLine();
+					
+					String[] result = {mensagem,userReceiver};
+					
+					
+					cliente.enviarDM(result);
+					
+				} else if (command.equals("/verdm")) {
+					// #3 Implementar funcionalidade para ver mensagens diretas do meu usuário
+					cliente.verDM();
 					}
 				}
 				System.out.print(nomeUsuario + INIT_CHAR);

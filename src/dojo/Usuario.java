@@ -20,6 +20,11 @@ public interface Usuario extends Remote {
 	public Set<Postagem> geraLinhaDoTempo(LocalDateTime inicio, LocalDateTime fim) throws RemoteException;
 	
 	public void seguirOutroUsuario(Usuario outroUsuario) throws RemoteException;
+
+	public List<Directs> getDirects() throws RemoteException;
+
+	void enviarDM(String mensagem, Usuario userReceiver, Usuario userSend) throws RemoteException;
+
 	
 	
 
